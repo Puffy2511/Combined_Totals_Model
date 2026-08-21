@@ -1,7 +1,7 @@
 
 import requests
 
-API_key = "883eac145e6d5a8a5e66a856872e4c0e"
+API_key = "????" # <-- Go to The Odds.api and make an account, copypaste your api key to put there
 sport = "aussierules_afl"
 region = "au"
 bookmaker = "pointsbetau"
