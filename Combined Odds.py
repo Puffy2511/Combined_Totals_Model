@@ -5,7 +5,7 @@ API_key = "????" # <-- Go to The Odds.api and make an account, copypaste your ap
 sport = "aussierules_afl"
 region = "au"
 bookmaker = "pointsbetau"
-market = "afl_player_disposals"
+market = "player_disposals"
 odds_format = "decimal"
 
 
