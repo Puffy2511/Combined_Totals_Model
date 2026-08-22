@@ -1,19 +1,20 @@
 
 import requests
 import json
+import math
 
-API_key = "????" # <-- Go to The Odds.api and make an account, copypaste your api key to put there
-sport = "aussierules_afl"
-region = "au"
-bookmaker = "pointsbetau"
-market = "player_disposals,player_disposals_over"
-odds_format = "decimal"
+API_key = '???' #<- Go to The Odds Api, create your account and sub your perso API key 
+sport = 'aussierules_afl'
+region = 'au'
+bookmaker = 'pointsbetau'
+market = 'player_disposals,player_disposals_over'
+odds_format = 'decimal'
 
 
 def get_events():
 
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/events"
-    params = {"api_key": API_key}
+    params = {'api_key': API_key}
 
     response = requests.get(url, params=params)
 
@@ -41,11 +42,11 @@ def fetch_data(event_id):
 
     # params although they are lax on apikey and format
     params = {
-        "api_key": API_key,
-        "format": odds_format,
-        "regions": region,
-        "markets": market,
-        "bookmakers": bookmaker
+        'api_key': API_key,
+        'format': odds_format,
+        'regions': region,
+        'markets': market,
+        'bookmakers': bookmaker
     }
 
     response = requests.get(url, params=params)
@@ -55,19 +56,19 @@ def fetch_data(event_id):
 
     event_data = response.json()
 
-    if "bookmakers" not in event_data:
+    if 'bookmakers' not in event_data:
         print(f" No data (yet?) in {bookmaker}")
         return None
 
     # because of the two markets, you merge them into one big list so you can see both over/under and alt
     outcomes = []
-    for m in event_data["bookmakers"][0]["markets"]:
-        outcomes.extend(m["outcomes"])
+    for m in event_data['bookmakers'][0]['markets']:
+        outcomes.extend(m['outcomes'])
 
     #Organise player profiles using the key as the player's name
     player_profiles = {}
     for o in outcomes:
-        p_name = o["description"]
+        p_name = o['description']
         if p_name not in player_profiles:
             player_profiles[p_name] = []
         player_profiles[p_name].append(o)
@@ -76,7 +77,7 @@ def fetch_data(event_id):
     for player, lines in player_profiles.items():
         disposals = {}
         for l in lines:
-            p = l["point"]
+            p = l['point']
             disposals[p] = disposals.get(p, 0) + 1
 
         fifty_fifty =[p for p, count in disposals.items() if count ==2 ]
@@ -88,20 +89,62 @@ def fetch_data(event_id):
             closest_fifty = min(lines, key = lambda x: abs(x['price']-1.87))
             fifty_fifty_val = closest_fifty['point']
 
-        fifty_fifty_over = next((l["price"] for l in lines if l["point"] == fifty_fifty_val and l["name"] == "Over"),None)
+        fifty_fifty_over = next((l['price'] for l in lines if l['point'] == fifty_fifty_val and l['name'] == 'Over'),None)
 
         if fifty_fifty_over:
             final_market[player] = {
-                "mean_disposals":fifty_fifty_val,
-                "mean_odds": fifty_fifty_over,
-                "alt_lines":lines
+                'mean_disposals':fifty_fifty_val,
+                'mean_odds': fifty_fifty_over,
+                'alt_lines':lines
             }
 
     return final_market
 
+def devig(final_market):
+
+    cleaned_market = {}
+
+    for player, info in final_market.items():
+
+        fifty_prob = 1 / info['mean_odds']
+
+        k = math.log(0.5)/math.log(fifty_prob)
+
+        player_cdf_disp = []
+
+        for line in info['alt_lines']:
+            odds = line['price']
+            disp  = line['point']
+            side = line['name']
+
+            implied_p = 1/odds
+
+            fair_p = math.pow(implied_p,k)
+
+            if side == 'Over':
+                cdf_val = 1- fair_p
+
+            else:
+                cdf_val = fair_p
+
+            player_cdf_disp.append({
+                'line': disp,
+                'cdf': cdf_val
+            })
+
+        cleaned_market[player] = {
+            'mean': info['mean_disposals'],
+            'vig_factor': k,
+            'cdf_pts': player_cdf_disp
+        }
+
+    return cleaned_market
+
 event_id = get_events()
+
 if event_id:
-    data = fetch_data(event_id)
-    print(json.dumps(data, indent=4))
+    raw_market = fetch_data(event_id)
 
-
+    if raw_market:
+        cleaned_market = devig(raw_market)
+        print(json.dumps(cleaned_market, indent=4))
