@@ -92,9 +92,9 @@ def fetch_data(event_id):
 
         if fifty_fifty_over:
             final_market[player] = {
-                'mean_disposals':fifty_fifty_val,
-                'mean_odds': fifty_fifty_over,
-                'alt_lines':lines
+                "mean_disposals":fifty_fifty_val,
+                "mean_odds": fifty_fifty_over,
+                "alt_lines":lines
             }
 
     return final_market
