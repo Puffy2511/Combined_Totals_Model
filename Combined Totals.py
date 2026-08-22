@@ -2,6 +2,8 @@
 import requests
 import json
 import math
+import numpy as np
+import scipy as sp
 
 API_key = '???' #<- Go to The Odds Api, create your account and sub your perso API key 
 sport = 'aussierules_afl'
@@ -139,7 +141,38 @@ def devig(final_market):
         }
 
     return cleaned_market
+    
+def normal_params(cleaned_market):
 
+    params = {}
+
+    for player, info in cleaned_market.items():
+        mu = info['mean']
+        points = info['cdf_pts']
+
+        # continuity correction cause o22.5 = 23
+        x_pts = np.array([p['line']-0.5 for p in points])
+        y_targets = np.array([p['cdf'] for p in points])
+
+        def residual(sigma):
+            if sigma <= 0:
+                return np.ones_like(y_targets) * 1e6
+            return sp.stats.norm.cdf(x_pts,mu,sigma) - y_targets
+
+        if len(x_pts) >= 2:
+            res = sp.optimize.least_squares(residual, x0 = 6.0, bounds = (2.0,15.0))
+            sigma = res.x[0]
+        else:
+            # Guessing rn but might update with a check later idk
+            sigma = 0.2 * mu
+
+        params[player]={
+            'mu': mu,
+            'sigma': sigma
+        }
+    return params
+
+#-------------------
 event_id = get_events()
 
 if event_id:
@@ -147,4 +180,7 @@ if event_id:
 
     if raw_market:
         cleaned_market = devig(raw_market)
-        print(json.dumps(cleaned_market, indent=4))
+        
+        if cleaned_market:
+            player_params = normal_params(cleaned_market)
+            print(json.dumps(cleaned_market, indent=4))
