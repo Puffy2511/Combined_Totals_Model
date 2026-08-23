@@ -58,8 +58,8 @@ def fetch_data(event_id):
 
     event_data = response.json()
 
-    if 'bookmakers' not in event_data:
-        print(f" No data (yet?) in {bookmaker}")
+    if 'bookmakers' not in event_data or len(event_data['bookmakers']) == 0:
+        print(f" Player data hasn't been released yet in {bookmaker}")
         return None
 
     # because of the two markets, you merge them into one big list so you can see both over/under and alt
@@ -171,7 +171,28 @@ def normal_params(cleaned_market):
             'sigma': sigma
         }
     return params
+    
+def combined_probability(p1_name, p2_name,profiles, target_total):
 
+    mu_1, sig_1  = profiles[p1_name]['mean'], profiles[p1_name]['sigma']
+    mu_2, sig_2 = profiles[p2_name]['mean'], profiles[p2_name]['sigma']
+
+    combined_mu = mu_1 + mu_2
+    combined_sigma = sqrt(sig_1**2 + sig_2**2)
+
+    target_total = target_total - 0.5
+    prob_over = 1 - sp.stats.norm.cdf(target_total, combined_mu, combined_sigma)
+    if prob_over > 0:
+        fair_odds = 1/prob_over
+    else:
+        fair_odds = float('inf')
+
+    return{
+        'combined_mu': combined_mu,
+        'combined_sigma': combined_sigma,
+        'fair_odds': fair_odds,
+        'probability': prob_over
+    }
 #-------------------
 event_id = get_events()
 
@@ -183,4 +204,24 @@ if event_id:
         
         if cleaned_market:
             player_params = normal_params(cleaned_market)
-            print(json.dumps(cleaned_market, indent=4))
+            player_list = list(player_params.keys())
+
+            print("Available players: \n")
+            for i, name in enumerate(player_list):
+                print(f"[{i}] {name}")
+
+            p1_index = int(input("Player 1 Index: "))
+            p2_index = int(input("Player 2 Index: "))
+            target = float(input("Combined Disposals: "))
+
+            p1_name = player_list[p1_index]
+            p2_name = player_list[p2_index]
+
+            result  = combined_probability(p1_name, p2_name, cleaned_market, target)
+
+            print(f"{p1_name} distribution: {player_params[p1_name]}")
+            print(f"{p2_name} distribution: {player_params[p2_name]}")
+
+            print(f"Players : {p1_name}, {p2_name}\n")
+            print(f"Probability of hitting {target}: {result['probability']}")
+            print(f"True odds: {result['fair_odds']}")
