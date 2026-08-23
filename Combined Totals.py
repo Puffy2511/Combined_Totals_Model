@@ -174,8 +174,8 @@ def normal_params(cleaned_market):
     
 def combined_probability(p1_name, p2_name,profiles, target_total):
 
-    mu_1, sig_1  = profiles[p1_name]['mean'], profiles[p1_name]['sigma']
-    mu_2, sig_2 = profiles[p2_name]['mean'], profiles[p2_name]['sigma']
+    mu_1, sig_1  = profiles[p1_name]['mu'], profiles[p1_name]['sigma']
+    mu_2, sig_2 = profiles[p2_name]['mu'], profiles[p2_name]['sigma']
 
     combined_mu = mu_1 + mu_2
     combined_sigma = sqrt(sig_1**2 + sig_2**2)
