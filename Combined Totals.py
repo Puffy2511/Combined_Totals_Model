@@ -4,6 +4,7 @@ import json
 import math
 import numpy as np
 import scipy as sp
+import matplotlib.pyplot as plt
 
 API_key = '???' #<- Go to The Odds Api, create your account and sub your perso API key 
 sport = 'aussierules_afl'
@@ -164,7 +165,7 @@ def normal_params(cleaned_market):
             sigma = res.x[0]
         else:
             # Guessing rn but might update with a check later idk
-            sigma = 0.2 * mu
+            sigma = 0.3202 * mu
 
         params[player]={
             'mu': mu,
@@ -186,6 +187,27 @@ def combined_probability(p1_name, p2_name,profiles, target_total):
         fair_odds = 1/prob_over
     else:
         fair_odds = float('inf')
+        
+    x = np.linspace(combined_mu - 4*combined_sigma, combined_mu + 4*combined_sigma, 1000)
+    y = sp.stats.norm.pdf(x, combined_mu, combined_sigma)
+
+    plt.plot(x,y,label='Combined Joint Distribution', linewidth = 3,color = 'maroon')
+
+    plt.axvline(target_total, linestyle = '--', color = 'limegreen', label = f'Target Total {target_total}')
+
+    x_fill = np.linspace(combined_mu - 4*combined_sigma, target_total,500)
+    y_fill = sp.stats.norm.pdf(x_fill, combined_mu, combined_sigma)
+    plt.fill_between(x_fill,y_fill, color = 'lightcoral')
+    x2_fill = np.linspace(target_total, combined_mu + 4*combined_sigma, 500)
+    y2_fill = sp.stats.norm.pdf(x2_fill, combined_mu, combined_sigma)
+    plt.fill_between(x2_fill, y2_fill, color='indianred')
+
+    plt.suptitle(f"Joint Probability Model: {p1_name} and {p2_name}", fontsize = 15)
+    plt.title(f"Win Probability: {prob_over:.2%} | Target: {target_total} | μ: {combined_sigma:.2f} | σ: {combined_sigma:.2f}", fontsize = 10)
+    plt.xlabel("Total Combined Disposals")
+    plt.ylabel("Probability Density")
+    plt.grid(alpha=0.3)
+    plt.show()
 
     return{
         'combined_mu': combined_mu,
@@ -217,7 +239,7 @@ if event_id:
             p1_name = player_list[p1_index]
             p2_name = player_list[p2_index]
 
-            result  = combined_probability(p1_name, p2_name, cleaned_market, target)
+            result  = combined_probability(p1_name, p2_name, player_params, target)
 
             print(f"{p1_name} distribution: {player_params[p1_name]}")
             print(f"{p2_name} distribution: {player_params[p2_name]}")
