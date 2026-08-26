@@ -206,7 +206,7 @@ def combined_probability(p1_name, p2_name,profiles, target_total):
     plt.fill_between(x2_fill, y2_fill, color='indianred')
 
     plt.suptitle(f"Joint Probability Model: {p1_name} and {p2_name}", fontsize = 15)
-    plt.title(f"Win Probability: {prob_over:.2%} | Target: {target_total} | μ: {combined_sigma:.2f} | σ: {combined_sigma:.2f}", fontsize = 10)
+    plt.title(f"Win Probability: {prob_over:.2%} | Target: {target_total} | μ: {combined_mu:.2f} | σ: {combined_sigma:.2f}", fontsize = 10)
     plt.xlabel("Total Combined Disposals")
     plt.ylabel("Probability Density")
     plt.grid(alpha=0.3)
@@ -218,6 +218,86 @@ def combined_probability(p1_name, p2_name,profiles, target_total):
         'fair_odds': fair_odds,
         'probability': prob_over
     }
+    
+def wealth_simulation(probability, user_odds, bankroll,  num_bets,num_sims,kelly_frac):
+
+    ev = user_odds * probability - 1
+
+    plt.figure(figsize = (15,10))
+
+    final_wealth = []
+    max_drawdowns = []
+
+    if ev > 0:
+        f = ev/(user_odds-1)
+    else:
+        f = 0.05
+
+    for i in range(num_sims):
+        path = [bankroll]
+        current_bal = bankroll
+
+        peak = bankroll
+        drawdown = 0
+
+        outcomes = np.random.choice([1,0], size = num_bets, p = [probability, 1-probability])
+
+        for win in outcomes:
+
+            stake = f*current_bal*kelly_frac
+
+            if current_bal < 1:
+                current_bal = 0
+                path.append(0)
+                break
+
+            if win:
+                current_bal += stake * (user_odds - 1)
+            else:
+                current_bal -= stake
+            path.append(current_bal)
+
+            if current_bal > peak:
+                peak = current_bal
+            dd = (peak - current_bal)/peak
+            if dd > drawdown:
+                drawdown = dd
+
+        final_wealth.append(current_bal)
+        max_drawdowns.append(drawdown)
+
+        if current_bal >= bankroll:
+            path_colour = 'mediumseagreen'
+        else:
+            path_colour = 'lightcoral'
+
+        plt.plot(path, color = path_colour,alpha = 0.5)
+    plt.axhline(y = bankroll, color = 'black', linestyle = '--', label = 'Starting bankroll')
+    plt.yscale('log')
+    plt.title(f"Kelly Criterion Simulation over {num_bets} bets")
+    plt.suptitle(f"True Prob: {probability:.1%}| Odds: {user_odds}| f*: {f}| kelly_frac: {kelly_frac}", fontsize = 15)
+    plt.xlabel("Number of bets")
+    plt.ylabel("Bankroll($) - Log Scale")
+    plt.grid(alpha=0.5)
+    plt.show()
+
+    print(final_wealth)
+    returns = [(i / bankroll) - 1 for i in final_wealth]
+
+    mean_final_wealth = np.mean(final_wealth)
+    print(f"Average Final Wealth: {mean_final_wealth}")
+    print(f"EV per bet for $1 stake size: {ev}")
+    print(f"Average Max Drawdown: {np.mean(max_drawdowns):.1%}")
+
+    mean_return = np.mean(returns)
+    std_return = np.std(returns)
+
+    if std_return != 0:
+        sharpe_ratio = mean_return / std_return
+        print(f"Sharpe Ratio: {sharpe_ratio}")
+
+    return ev
+
 #-------------------
 event_id = get_events()
 
@@ -250,3 +330,21 @@ if event_id:
             print(f"Players : {p1_name}, {p2_name}\n")
             print(f"Probability of hitting {target}: {result['probability']}")
             print(f"True odds: {result['fair_odds']}")
+            
+            true_prob = round(result['probability'], 3)
+
+            sim_count = int(input("Number of simulations: "))
+
+            bankroll = float(input("Bankroll: "))
+
+            number_of_bets = int(input("Number of bets: "))
+
+            number_of_paths = int(input("Number of paths: "))
+
+            kelly = float(input("Kelly Fraction: "))
+
+            for i in range(sim_count):
+
+                test_odds = float(input("Test odds: "))
+
+                wealth_simulation(true_prob, test_odds, bankroll, number_of_bets, number_of_paths,kelly)
