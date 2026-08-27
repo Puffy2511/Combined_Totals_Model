@@ -1,4 +1,5 @@
 
+Edit: I made sure to refresh my API key 😬
 ## About
 Model that calculates the implied probability and true odds of player A and player B to combine for 'X' disposals (in AFLM), based off bookmaker odds.
 
@@ -16,6 +17,8 @@ Model that calculates the implied probability and true odds of player A and play
 
 ## Example
 This example uses this model to calculate the true odds and probability of the offer above (Nick and Josh Daicos to combine for 70+ disposals)
+
+Go to [The Odds.API](https://the-odds-api.com) to obtain your personal api key and enter it in the global parameter field in place of the ??? in the python file. 
 
 The model scrapes Pointsbet and returns upcoming AFL matches. You choose the indice corresponding to whatever game. 
 
