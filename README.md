@@ -15,6 +15,11 @@ Model that calculates the implied probability and true odds of player A and play
 | **Customisable Monte Carlo Risk Simulation**      | Includes modifiable parameters such as controlling Kelly portion and test odds |
 
 ## Example
+This example uses this model to calculate the true odds and probability of the offer above (Nick and Josh Daicos to combine for 70+ disposals)
+
+The model scrapes Pointsbet and returns upcoming AFL matches. You choose the indice corresponding to whatever game. 
+
+
 
 
 
