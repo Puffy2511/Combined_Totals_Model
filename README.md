@@ -32,4 +32,4 @@ The model also returns the fair odds and implied probability of the event occurr
 
 You can also choose to run risk simulations with parameters based on the previous probabilities. Parameters include a starting bankroll, payout odds, number of bets, number of simulations and Kelly proportion. The model outputs the expected final wealth, EV per bet for $1 stake, Average max drawdown and the sharpe ratio.
 
-<img src = "
+<img src = "Images/image_2026-08-27_203046732.png">
