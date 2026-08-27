@@ -2,7 +2,10 @@
 ## About
 Model that calculates the implied probability and true odds of player A and player B to combine for 'X' disposals (in AFLM), based off bookmaker odds.
 
-
+<p align = "center">
+  <img src = "https://github.com/Puffy2511/Combined_Totals_Model/blob/e8331cd92d7be84300eae3c395605f41ebac2c0c/image_2026-08-27_200114594.png" width = "500">
+</p>
+  
 ## Features
 
 | Feature                     | Description                                                                                  |
