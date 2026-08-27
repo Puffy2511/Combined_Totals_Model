@@ -36,3 +36,8 @@ You can also choose to run risk simulations with parameters based on the previou
 
 ## Visualisations
 
+Joint Normal Distribution for Player A and B
+<p align = "center">
+  <img src = "Images/image_2026-08-27_203056452.png">
+</p>
+
