@@ -19,6 +19,10 @@ This example uses this model to calculate the true odds and probability of the o
 
 The model scrapes Pointsbet and returns upcoming AFL matches. You choose the indice corresponding to whatever game. 
 
+<img src = "Images/image_2026-08-27_212435209.png">
+
+You then use the 
+
 
 
 
