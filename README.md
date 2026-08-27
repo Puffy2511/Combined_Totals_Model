@@ -54,9 +54,11 @@ Monte Carlo simulations on a $1000 bankroll across 1000 bets with 50 simulations
 ## Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/Puffy2511/Combined_Totals_Model.git
 
 pip install -r requirements.txt
 
-
+```
+**R Dependencies**
+```R
+install.packages(c("tidyverse","fitzRoy"))
