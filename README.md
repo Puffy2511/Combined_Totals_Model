@@ -21,9 +21,11 @@ The model scrapes Pointsbet and returns upcoming AFL matches. You choose the ind
 
 <img src = "Images/image_2026-08-27_212435209.png">
 
-You then use the [View Correlation Calculator](Correlation%20Calculator.R) to calculate the historical correlation between player A and player B 
+You can use the [View Correlation Calculator](Correlation%20Calculator.R) to calculate the historical correlation between player A and player B 
 
+<img src = "Images/image_2026-08-27_213014948.png">
 
+Select player A and B via indices as well as a target total to hit. The model outputs their individual distributions as well as their joint distributions (assumed both to be Normal)
 
 
 
