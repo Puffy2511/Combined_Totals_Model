@@ -25,7 +25,11 @@ You can use the [View Correlation Calculator](Correlation%20Calculator.R) to cal
 
 <img src = "Images/image_2026-08-27_213014948.png">
 
-Select player A and B via indices as well as a target total to hit. The model outputs their individual distributions as well as their joint distributions (assumed both to be Normal)
+Select player A and B via indices as well as a target total to hit. The model outputs their individual distributions as well as their joint distributions (assumed both to be Normal). 
+The model also returns the fair odds and implied probability of the event occurring. 
 
+<img src = "Images/image_2026-08-27_203026470.png">
 
+You can also choose to run risk simulations with parameters based on the previous probabilities. Parameters include a starting bankroll, payout odds, number of bets, number of simulations and Kelly proportion. The model outputs the expected final wealth, EV per bet for $1 stake, Average max drawdown and the sharpe ratio.
 
+<img src = "
