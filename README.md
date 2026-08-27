@@ -21,7 +21,7 @@ The model scrapes Pointsbet and returns upcoming AFL matches. You choose the ind
 
 <img src = "Images/image_2026-08-27_212435209.png">
 
-You then use the 
+You then use the [View Correlation Calculator](Correlation%20Calculator.R) to calculate the historical correlation between player A and player B 
 
 
 
