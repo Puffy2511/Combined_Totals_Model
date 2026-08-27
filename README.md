@@ -41,3 +41,9 @@ Joint Normal Distribution for Player A and B
   <img src = "Images/image_2026-08-27_203056452.png">
 </p>
 
+Monte Carlo simulations on $1000 bankroll across 1000 bets with 50 simulations at Tab odds
+<p align = "center">
+  <img src = "Images/image_2026-08-27_203105781.png" height = "400">
+</p>  
+
+Monte Carlo simulations on a $1000 bankroll across 1000 bets with 50 simulations at boosted odds
