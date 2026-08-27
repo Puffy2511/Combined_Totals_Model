@@ -14,6 +14,7 @@ Model that calculates the implied probability and true odds of player A and play
 | **Individual Player Modelling**      | Uses bookmaker lines and least squares optimisation to fit individual player models |
 | **Customisable Monte Carlo Risk Simulation**      | Includes modifiable parameters such as controlling Kelly portion and test odds |
 
-## Visualisations
+## Example
+
 
 
