@@ -60,14 +60,34 @@ This model would then output the probability of hitting 'X' disposals, which you
  <img src = "Images/image_2026-08-28_184919166.png" height = 400>
 </p>
 
-# Motivation
+## Risk Simulation
 
-The point of this model is to evaluate whether or not a bet is worth taking. On occasion, some bookmakers do offer combined totals:
+The model gives the option to visualise sample wealths if you were to take EV / non EV bets via Monte Carlo simulations . Simulations bet according to a fractional [Kelly Criterion](https://help.bonusbank.com.au/article/386-what-is-the-kelly-criterion) which you are able to modify. This strategy maximises growth based on the amount of edge taken.  
+
+$$f^* = FractionalKellyPortion \times \frac{(Odds \times P_{fair}) - 1}{Odds - 1}$$
+
+Lastly, after running simulations, it outputs risk metrics like the Sharpe ratio and Max Drawdown based on the amount of simulations ran. 
+
+## Motivation
+
+On occasion, some bookmakers do offer combined totals:
 
 <p align = "center">
  <img src = "Images/image_2026-08-28_185616191.png" height = 200>
- <img src = "
+ <img src = "Images/image_2026-08-28_185647976.png" height = 200>
 </p>
+
+So the point of this model should be to evaluate whether or not a certain promotional bet is worth being taken. (The example in README would be a -EV bet according to this model). Ideally, you would want to calculate the value of a bet right before the match happens as thats when the most money pours in and bookmakers have to adjust to crowd behaviour. 
+
+Unfortunately, when I was betting on these markets, I didn't use this model and as such, I couldn't track the amount of EV I was taking. However, the rule of thumb for these types of bets is that if the target was close to the mean (which often it was) and the odds were far above 2, then it was usually EV. 
+
+# Assumptions
+
+Yeah, quite a few. 😬
+* We assume that all players follow a Normal Distribution. While this might be a good fit for midfielders who have high volume in getting disposals, probably isn't as good for lower disposal players.
+* Obviously, bookmaker margin should follow Favourite-Longshot bias but we're assuming that the vig applied on each line follows some fixed "stretch" factor k.
+* We are only using 1 bookmaker for data scraping. Not all bookmakers will price the lines the exact same so the model would be a bit more "accurate" in averaging multiple bookmaker odds to reduce variance but not sure if the computation is worth it, especially if you're calculating multiple players in succession.
+
 
 
  
