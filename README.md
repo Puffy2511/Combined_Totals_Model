@@ -1,5 +1,6 @@
 
 Edit: I made sure to refresh my API key 😬
+
 Edit: You can read the methodology [here](Methodology.md)
 ## About
 Model that calculates the implied probability and true odds of player A and player B to combine for 'X' disposals (in AFLM), based off bookmaker odds.
