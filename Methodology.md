@@ -41,9 +41,22 @@ We assume that the final count of disposals for each player follows a [Normal Di
  This comes out to about 0.3203 ( note that we filter players based on games played and if they are midfielder as those yield more accurate results). But to summarise, if there isn't enough data, we assume:
 
  $$\sigma\ = 0.3203 * \mu\$$ 
+<p align = "center">
+ <img src = "Images/image_2026-08-28_183037089.png" height = 400>
+</p>
 
+## Final Total Distribution
 
+The sum of two R.Vs X and Y which are normally distributed, should also be normally distributed with parameters (see [Proof](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables)):
 
+  $$\mu_{total}\ = \mu_{X}\ +\mu_{Y}\$$  
+  $$\sigma_{total} = \sqrt{\sigma_X^2 + \sigma_Y^2 + 2\rho\sigma_X\sigma_Y}$$
+  
+Player performances are correlated simply because they share the same ball. Once again, the FitzRoy library was used to scrape data from the last 3 seasons. Using built in R functions, we are able to calculate the correlation in disposals between two players which is further filtered by a minimum amount of games they are required to play together to reduce outliers.
+
+This model would then output the probability of hitting 'X' disposals, which you can calculate the "true" odds by taking the reciprocal.
+
+ 
 
 
 
