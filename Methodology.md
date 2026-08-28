@@ -3,6 +3,7 @@ This is a side project that presents a framework for pricing “Combined Total�
 By extracting implied probability parameters from player props from Pointsbet via TheOdds API , the model fits a joint Normal distribution to estimate the probability of two players reaching a certain disposal threshold. 
 The system includes Monte Carlo simulations of wealth using Kelly staking to evaluate long term expectancy and risk adjusted returns of taking multiple bets in this market. 
 
+Note that this theory can be applied to not just AFL but any sport market in general, this would require changing up some of the parameters in the python code and running a similar analysis on the correlation, etc...
 # Background
 I used to do EV betting, which would involve calculating the “true” odds of a bet and deciding whether it would benefit me in the long run. 
 One of the markets these bets would include were combined totals, eg) “Player A and Player B to combine for X goals/points/disposals” which after asking another member, were found to be “impossible” to calculate (but approximated via rule of thumb). 
