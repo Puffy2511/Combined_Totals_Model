@@ -62,7 +62,12 @@ This model would then output the probability of hitting 'X' disposals, which you
 
 # Motivation
 
-The point of this model is to evaluate whether or not a bet is worth taking. On occasion, some bookmakers do offer combined totals 
+The point of this model is to evaluate whether or not a bet is worth taking. On occasion, some bookmakers do offer combined totals:
+
+<p align = "center">
+ <img src = "Images/image_2026-08-28_185616191.png" height = 200>
+ <img src = "
+</p>
 
 
  
