@@ -68,6 +68,10 @@ $$f^* = FractionalKellyPortion \times \frac{(Odds \times P_{fair}) - 1}{Odds - 1
 
 Lastly, after running simulations, it outputs risk metrics like the Sharpe ratio and Max Drawdown based on the amount of simulations ran. 
 
+<p align = "center">
+ <img src = "Images/image_2026-08-28_205535780.png" height = 300>
+</p>
+
 ## Motivation
 
 On occasion, some bookmakers do offer combined totals:
@@ -79,7 +83,9 @@ On occasion, some bookmakers do offer combined totals:
 
 So the point of this model should be to evaluate whether or not a certain promotional bet is worth being taken. (The example in README would be a -EV bet according to this model). Ideally, you would want to calculate the value of a bet right before the match happens as thats when the most money pours in and bookmakers have to adjust to crowd behaviour. 
 
-Unfortunately, when I was betting on these markets, I didn't use this model and as such, I couldn't track the amount of EV I was taking. However, the rule of thumb for these types of bets is that if the target was close to the mean (which often it was) and the odds were far above 2, then it was usually EV. 
+Unfortunately, when I was betting on these markets, I didn't use this model and as such, I couldn't track the amount of EV I was taking. However, the rule of thumb for these types of bets is that if the target was close to the sum of both player's means (which often it was) and the odds were far above 2, then it was usually EV. You can check my results for just betting on Combined Totals [here](https://docs.google.com/spreadsheets/d/1lVxZ-3RVlEv_6475TB3VJo7fqbQFWyEOgB0tDMa6zU0/edit?usp=sharing).
+
+Another thing I should mention is that I did not use Kelly Criterion, simply because I already had a large enough bankroll and typically, promo bets have a cap on how much you can place which I guess is a limit of the simulations. 
 
 # Assumptions
 
